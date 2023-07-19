@@ -11,11 +11,13 @@ public class Player : MonoBehaviour
     [SerializeField] private int _health;
     [SerializeField] private int _maxHealth = 100;
     [SerializeField] private List<Weapon> _weapons;
+    [SerializeField] private List<GameObject> _weaponModels;
     [SerializeField] private Weapon _currentWeapon;
     [SerializeField] private int _currentWeaponNumber;
-    [SerializeField] private GameObject _currentWeaponModel;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _armWithWeapon;
+
+    [SerializeField] public List<Weapon> _testContainterForWeapons;
 
     public event UnityAction UpdateMoneyCount
     {
@@ -40,44 +42,56 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        for (int i = 0; i < _testContainterForWeapons.Count; i++)
+        {
+            AddWeapon(_testContainterForWeapons[i]);
+        }
+
         _health = _maxHealth;
         _currentWeaponNumber = 0;
         _currentWeapon = _weapons[_currentWeaponNumber];
         _animator = GetComponent<Animator>();
-        ChangeWeapon(_currentWeapon);
+        ChangeWeapon(_currentWeaponNumber);
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Time.timeScale != 0)
         {
-            _currentWeapon.Shoot(_armWithWeapon);
-        }
-
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            if (_currentWeaponNumber >= _weapons.Count - 1)
-                _currentWeaponNumber = 0;
-            else
-                _currentWeaponNumber++;
-
-            if (_currentWeapon != null)
+            if (Input.GetMouseButtonDown(0))
             {
-                Destroy(_currentWeapon);
+                _currentWeapon.Shoot(_armWithWeapon);
             }
 
-            _currentWeapon = _weapons[_currentWeaponNumber];
-            ChangeWeapon(_currentWeapon);
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                if (_currentWeaponNumber >= _weapons.Count - 1)
+                    _currentWeaponNumber = 0;
+                else
+                    _currentWeaponNumber++;
+                
+                ChangeWeapon(_currentWeaponNumber);
+            }
         }
     }
 
-    private void ChangeWeapon(Weapon weapon)
+    private void ChangeWeapon(int currentWeaponNumber)
     {
-        if (_currentWeaponModel != null)
+        _currentWeapon = _weapons[_currentWeaponNumber];
+
+        for (int i = 0; i < _weapons.Count; i++)
         {
-            Destroy(_currentWeaponModel);
+            _weaponModels[i].SetActive(false);
         }
 
-        Instantiate(weapon.Model, _armWithWeapon.position, Quaternion.identity);
+        _weaponModels[_currentWeaponNumber].SetActive(true);
+    }
+
+    private void AddWeapon(Weapon weapon)
+    {
+        _weapons.Add(weapon);
+        var newWeapon = Instantiate(weapon.Model, _armWithWeapon.position, Quaternion.identity, _armWithWeapon);
+        _weaponModels.Add(newWeapon);
+        newWeapon.SetActive(false);
     }
 }

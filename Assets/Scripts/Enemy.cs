@@ -1,21 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private UnityEvent _died;
     [SerializeField] private string _name;
-    [SerializeField] private int _health;
+    [SerializeField] private int _maxHealth;
     [SerializeField] private int _damage;
     [SerializeField] private int _reward;
     [SerializeField] private GameObject _model;
     [SerializeField] private float _speed;
     [SerializeField] private Player _target;
     [SerializeField] private Transform _currentPosition;
+    [SerializeField] private Slider _slider;
 
     private int _minDamage = 1;
+    private int _health;
 
     public string Name => _name;
     public GameObject Model => _model;
@@ -24,6 +27,11 @@ public class Enemy : MonoBehaviour
     {
         add => _died.AddListener(value);
         remove => _died.RemoveListener(value);
+    }
+
+    public void UpdateHealthBar()
+    {
+        _slider.value = (float)_health / (float)_maxHealth;
     }
 
     public void Init(Player player)
@@ -40,10 +48,13 @@ public class Enemy : MonoBehaviour
 
         if (_health <= 0)
             Die();
+
+        UpdateHealthBar();
     }
 
     private void Start()
     {
+        _health = _maxHealth;
         _currentPosition = GetComponent<Transform>();
     }
 

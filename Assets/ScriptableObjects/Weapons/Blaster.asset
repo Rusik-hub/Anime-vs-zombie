@@ -15,7 +15,7 @@ MonoBehaviour:
   _name: "\u0411\u043B\u0430\u0441\u0442\u0435\u0440"
   _description: 
   _model: {fileID: 5669095412644547988, guid: 25805b94e3db64a2caf119a41b067b46, type: 3}
-  _image: {fileID: 0}
-  _price: 1
+  _sprite: {fileID: -1720224503643284101, guid: 2262f408278271248889a3ea3c7e75bf, type: 3}
+  _price: 50
   _bullet: {fileID: 3852247470323734707, guid: 41a42426eb6104a3dbd1cfe544e81369, type: 3}
   _isBuyed: 0

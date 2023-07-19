@@ -8,7 +8,7 @@ public class WeaponView : MonoBehaviour
 {
     [SerializeField] private TMP_Text _name;
     [SerializeField] private TMP_Text _price;
-    [SerializeField] private Sprite _image;
+    [SerializeField] private Image _image;
     [SerializeField] private Weapon _weapon;
     [SerializeField] private Button _button;
 
@@ -16,7 +16,7 @@ public class WeaponView : MonoBehaviour
     {
         _name.text = weapon.Name;
         _price.text = weapon.Price.ToString();
-        //_image = _weapon.Image;
+        _image.sprite = weapon.Sprite;
         _weapon = weapon;
     }
 }

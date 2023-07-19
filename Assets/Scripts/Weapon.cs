@@ -10,7 +10,7 @@ public class Weapon : ScriptableObject
     [SerializeField] private string _name;
     [SerializeField] private string _description;
     [SerializeField] private GameObject _model;
-    [SerializeField] private Sprite _image;
+    [SerializeField] private Sprite _sprite;
     [SerializeField] private int _price;
     [SerializeField] private Bullet _bullet;
     [SerializeField] private bool _isBuyed;
@@ -18,7 +18,7 @@ public class Weapon : ScriptableObject
     public string Name => _name;
     public int Price => _price;
     public GameObject Model => _model;
-    public Sprite Image => _image;
+    public Sprite Sprite => _sprite;
 
     public void Shoot(Transform shootPoint)
     {

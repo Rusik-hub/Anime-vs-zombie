@@ -12,11 +12,13 @@ public class Shop : MonoBehaviour
     public void Close()
     {
         gameObject.SetActive(false);
+        Time.timeScale = 1f;
     }
 
     public void Open()
     {
         gameObject.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     private void Start()

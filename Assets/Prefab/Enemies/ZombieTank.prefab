@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: -6861910928973342828}
   - component: {fileID: -7707767085914394348}
   m_Layer: 0
-  m_Name: Zombie
+  m_Name: ZombieTank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,11 +372,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _name: "\u0417\u043E\u043C\u0431\u0438"
-  _maxHealth: 2
-  _damage: 5
-  _reward: 1
+  _maxHealth: 5
+  _damage: 1
+  _reward: 2
   _model: {fileID: 1360779315266091016}
-  _speed: 5
+  _speed: 2
   _target: {fileID: 0}
   _currentPosition: {fileID: 0}
   _slider: {fileID: 6752725557863839018}
