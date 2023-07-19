@@ -18,4 +18,4 @@ MonoBehaviour:
   _sprite: {fileID: -8207146450713788509, guid: 2262f408278271248889a3ea3c7e75bf, type: 3}
   _price: 500
   _bullet: {fileID: 7065815055891366532, guid: 36e01fcaeddd443bdbc73316e45889bf, type: 3}
-  _isBuyed: 0
+  _isBuyed: 1

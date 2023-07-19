@@ -8,7 +8,6 @@ using UnityEngine.Events;
 public class Player : MonoBehaviour
 {
     [SerializeField] private UnityEvent _updateMoneyCount;
-    [SerializeField] private int _health;
     [SerializeField] private int _maxHealth = 100;
     [SerializeField] private List<Weapon> _weapons;
     [SerializeField] private List<GameObject> _weaponModels;
@@ -16,17 +15,18 @@ public class Player : MonoBehaviour
     [SerializeField] private int _currentWeaponNumber;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _armWithWeapon;
+    [SerializeField] private Weapon _defaultWeapon;
 
-    [SerializeField] public List<Weapon> _testContainterForWeapons;
+    private int _money = 4900;
+    private int _minReward = 1;
+    private int _health;
+    private int _firstWeaponIndex = 0;
 
     public event UnityAction UpdateMoneyCount
     {
         add => _updateMoneyCount.AddListener(value);
         remove => _updateMoneyCount.RemoveListener(value);
     }
-
-    private int _money;
-    private int _minReward = 1;
 
     public int Money => _money;
 
@@ -40,18 +40,34 @@ public class Player : MonoBehaviour
         _updateMoneyCount?.Invoke();
     }
 
+    public void AddWeapon(Weapon weapon)
+    {
+        _weapons.Add(weapon);
+        weapon.Buy();
+        var newWeapon = Instantiate(weapon.Model, _armWithWeapon.position, Quaternion.identity, _armWithWeapon);
+        _weaponModels.Add(newWeapon);
+        newWeapon.SetActive(false);
+    }
+
+    public bool IsEnoughMoney(int price)
+    {
+        if (_money - price < 0)
+            return false;
+
+        SpendMoney(price);
+        _updateMoneyCount?.Invoke();
+        return true;
+    }
+
     private void Start()
     {
-        for (int i = 0; i < _testContainterForWeapons.Count; i++)
-        {
-            AddWeapon(_testContainterForWeapons[i]);
-        }
-
         _health = _maxHealth;
+        AddWeapon(_defaultWeapon);
         _currentWeaponNumber = 0;
         _currentWeapon = _weapons[_currentWeaponNumber];
         _animator = GetComponent<Animator>();
-        ChangeWeapon(_currentWeaponNumber);
+        UpdateWeaponInHand(_currentWeaponNumber);
+        _weaponModels[_currentWeaponNumber].SetActive(true);
     }
 
     private void Update()
@@ -65,17 +81,41 @@ public class Player : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                if (_currentWeaponNumber >= _weapons.Count - 1)
-                    _currentWeaponNumber = 0;
-                else
-                    _currentWeaponNumber++;
-                
-                ChangeWeapon(_currentWeaponNumber);
+                ChangeWeaponToRight();
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                ChangeWeaponToLeft();
             }
         }
     }
 
-    private void ChangeWeapon(int currentWeaponNumber)
+    private void SpendMoney(int money)
+    {
+        _money -= money;
+    }
+
+    private void ChangeWeaponToRight()
+    {
+        if (_currentWeaponNumber >= _weapons.Count - 1)
+            _currentWeaponNumber = 0;
+        else
+            _currentWeaponNumber++;
+
+        UpdateWeaponInHand(_currentWeaponNumber);
+    }
+
+    private void ChangeWeaponToLeft()
+    {
+        if (_currentWeaponNumber <= _firstWeaponIndex)
+            _currentWeaponNumber = _weapons.Count - 1;
+        else
+            _currentWeaponNumber--;
+
+        UpdateWeaponInHand(_currentWeaponNumber);
+    }
+
+    private void UpdateWeaponInHand(int currentWeaponNumber)
     {
         _currentWeapon = _weapons[_currentWeaponNumber];
 
@@ -85,13 +125,5 @@ public class Player : MonoBehaviour
         }
 
         _weaponModels[_currentWeaponNumber].SetActive(true);
-    }
-
-    private void AddWeapon(Weapon weapon)
-    {
-        _weapons.Add(weapon);
-        var newWeapon = Instantiate(weapon.Model, _armWithWeapon.position, Quaternion.identity, _armWithWeapon);
-        _weaponModels.Add(newWeapon);
-        newWeapon.SetActive(false);
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2715583134332167764}
   - component: {fileID: 2361074989916478450}
   m_Layer: 5
-  m_Name: BuyButton
+  m_Name: SellButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -566,4 +566,4 @@ MonoBehaviour:
   _price: {fileID: 2296508363422507058}
   _image: {fileID: 2146031922025598877}
   _weapon: {fileID: 0}
-  _button: {fileID: 2361074989916478450}
+  _sellButton: {fileID: 2361074989916478450}

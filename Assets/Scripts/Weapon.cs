@@ -19,9 +19,15 @@ public class Weapon : ScriptableObject
     public int Price => _price;
     public GameObject Model => _model;
     public Sprite Sprite => _sprite;
+    public bool IsBuyed => _isBuyed;
 
     public void Shoot(Transform shootPoint)
     {
         Instantiate(_bullet, shootPoint.position, new Quaternion(0, 0, -90, 1));
+    }
+
+    public void Buy()
+    {
+        _isBuyed = true;
     }
 }
