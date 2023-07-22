@@ -60,7 +60,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        _currentPosition.Translate(Vector2.left * _speed * Time.deltaTime, Space.World);
+        transform.position = Vector3.MoveTowards(transform.position, _target.Target.position, _speed * Time.deltaTime);
     }
 
     private void Die()

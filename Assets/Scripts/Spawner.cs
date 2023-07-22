@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Spawner : MonoBehaviour
 {
@@ -14,18 +15,21 @@ public class Spawner : MonoBehaviour
     private float _timeAfterLastSpawn;
     private int _spawnedEnemyInWave = 0;
 
-    private void Start()
-    {
-        _currentWave = _waves[_currentWaveNumber];
-        _spawnPoint = GetComponent<Transform>();
-    }
+    public event UnityAction AllEnemySpawned;
 
-    private void Update()
+    public void StartWave()
     {
         if (_currentWave == null)
             return;
 
         _timeAfterLastSpawn += Time.deltaTime;
+
+        if (_timeAfterLastSpawn >= _currentWave.Delay)
+        {
+            InstantiateEnemy();
+            _spawnedEnemyInWave++;
+            _timeAfterLastSpawn = 0;
+        }
 
         if (_spawnedEnemyInWave >= _currentWave.EnemyCount)
         {
@@ -36,16 +40,20 @@ public class Spawner : MonoBehaviour
             }
 
             _currentWaveNumber++;
-            _currentWave = _waves[_currentWaveNumber];
-            _spawnedEnemyInWave = 0;
-        }
+            AllEnemySpawned?.Invoke();
+            SetWave(_currentWaveNumber);
+        } 
+    }
 
-        if (_timeAfterLastSpawn >= _currentWave.Delay)
-        {
-            InstantiateEnemy();
-            _spawnedEnemyInWave++;
-            _timeAfterLastSpawn = 0;
-        }
+    private void Start()
+    {
+        _currentWave = _waves[_currentWaveNumber];
+        _spawnPoint = GetComponent<Transform>();
+    }
+
+    private void Update()
+    {
+        StartWave();
     }
 
     private void InstantiateEnemy()
@@ -53,6 +61,12 @@ public class Spawner : MonoBehaviour
         Enemy enemy = Instantiate(_currentWave.TemplateEnemy, _spawnPoint.position,
             _spawnPoint.rotation, _spawnPoint).GetComponent<Enemy>();
         enemy.Init(_player);
+    }
+
+    private void SetWave(int index)
+    {
+        _currentWave = _waves[index];
+        _spawnedEnemyInWave = 0;
     }
 }
 

@@ -23,11 +23,12 @@ public class Weapon : ScriptableObject
 
     public void Shoot(Transform shootPoint)
     {
-        Instantiate(_bullet, shootPoint.position, new Quaternion(0, 0, -90, 1));
+        Instantiate(_bullet, shootPoint.position, Quaternion.identity);
     }
 
     public void Buy()
     {
         _isBuyed = true;
+        Debug.Log("Покупка совершена! \"ScriptableObject/Weapon\"");
     }
 }

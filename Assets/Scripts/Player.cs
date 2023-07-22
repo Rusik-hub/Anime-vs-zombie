@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _armWithWeapon;
     [SerializeField] private Weapon _defaultWeapon;
+    [SerializeField] private Transform _target;
 
     private int _money = 4900;
     private int _minReward = 1;
@@ -29,6 +30,7 @@ public class Player : MonoBehaviour
     }
 
     public int Money => _money;
+    public Transform Target => _target;
 
     public void TakeReward(int reward)
     {
