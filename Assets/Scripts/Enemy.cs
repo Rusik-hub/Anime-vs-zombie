@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
 
         if (_health <= 0)
             Die();
-
+ 
         UpdateHealthBar();
     }
 
